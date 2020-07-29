@@ -1,0 +1,50 @@
+<div class="container">
+  <!-- <p>App Works</p> -->
+  <form [formGroup]="loginForm" (ngSubmit)="submit(loginForm.value)">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" class="form-control" aria-describedby="emailHelp" formControlName="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-control" formControlName="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<div class="container vh-100">
+  <div class="d-flex flex-column align-items-center">
+    <div class="p-1">
+      <video #video class="vid" autoplay></video>
+    </div>
+    <div class="pb-2">
+      <button class="btn btn-primary" (click)="capture()">Capture Image</button>
+    </div>
+    <div class="p-1">
+      <canvas #canvas class="vid"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="container vh-100">
+  <div class="d-flex flex-column align-items-center">
+    <ul>
+      <li *ngFor="let img of captureImgArr">
+        <img src="{{img}}" height="50" />
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+<!-- For testing purpose only -->
+
+<div class="container vh-100">
+  <div class="d-flex flex-column align-items-center">
+    <h3>Upload Image</h3>
+    <input id="photo" type="file" />
+    <button type="button" class="btn btn-success btn-s" (click)="upload()">Upload</button>
+  </div>
+</div>

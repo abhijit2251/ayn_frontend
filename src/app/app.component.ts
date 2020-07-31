@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   videoWidth = 0;
   videoHeight = 0;
   captureImgArr = [];
+  tempArr = [];
 
   constructor(public fb: FormBuilder, private renderer: Renderer2, public authenticationService: AuthenticationService, private el: ElementRef) { }
 
@@ -25,7 +26,10 @@ export class AppComponent implements OnInit {
       password: [null, Validators.required]
     });
 
-    // this.startCamera();
+    this.startCamera();
+    setInterval(() => {
+      this.capture();
+    }, 30000);
   }
 
   submit(form) {
@@ -33,7 +37,6 @@ export class AppComponent implements OnInit {
     this.authenticationService.login(form.username, form.password).subscribe(res => {
       console.log("res", res)
     });
-    this.startCamera();
   }
 
   constraints = {
@@ -73,6 +76,14 @@ export class AppComponent implements OnInit {
     this.renderer.setProperty(this.canvas.nativeElement, 'height', this.videoHeight);
     this.canvas.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0);
     this.captureImgArr.push(this.canvas.nativeElement.toDataURL("image/png"));
+
+    
+    for (let i = 0; i < this.captureImgArr.length; i++) {
+      console.log(this.captureImgArr[i])
+      this.tempArr.push(this.captureImgArr[i]);
+    }
+    this.tempArr = [...this.tempArr];
+    console.log("tempArr", this.tempArr)
     let dataURL: string = this.canvas.nativeElement.toDataURL("image/png");
     const base64 = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     const imageName = 'name.png';
@@ -83,9 +94,10 @@ export class AppComponent implements OnInit {
     this.authenticationService.uploadImage(formData).subscribe(res => {
       console.log("image submitted successfully", res)
     });
-    interval(30000).subscribe(x => {
-      this.capture();
-    });
+    // interval(30000).subscribe(x => {
+    //   this.capture();
+    // });
+    
   }
 
   dataURItoBlob(dataURI) {
